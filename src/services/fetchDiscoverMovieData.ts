@@ -1,7 +1,6 @@
 import axios from "axios"
 import dotenv from "dotenv";
 import { fetchMovieEditors } from "./fetchMovieCreditData";
-import e from "express";
 
 dotenv.config();
 
@@ -15,17 +14,18 @@ interface Movie {
 // Get movie DB info
 export const fetchMovieData = async (year: number) => {
     try{
+        // Get all movie data for the specified year
         const response = await axios.get(`https://api.themoviedb.org/3/discover/movie?language=en-US&page=1&primary_release_year=${year}&sort_by=popularity.desc`, {
             headers: {
                 "Authorization": `Bearer ${process.env.API_READ_ACCESS_TOKEN}`,
                 "Cache-Control": "no-cache",
-                Pragma: "no-cache",
             }
         });
 
         // Extract Required Data
         const extractedData = await Promise.all(response.data.results.map(async (movie: Movie) => {
             
+            // Get editors for the current movie
             const editors = await fetchMovieEditors(movie.id);
         
             const movieData: Record<string, any> = {
@@ -46,6 +46,6 @@ export const fetchMovieData = async (year: number) => {
 
     } catch (error) {
         console.error("Error fetching the movie data", error);
-        throw new Error("Failed to fetch movie data");
+        return 0
     }
 };

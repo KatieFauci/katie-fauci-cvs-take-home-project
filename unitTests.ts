@@ -1,18 +1,24 @@
+import axios from "axios";
 import { fetchMovieData } from "./src/services/fetchDiscoverMovieData";
 import { fetchMovieEditors } from "./src/services/fetchMovieCreditData";
 
 
 async function testFetchMovieData() {
     const results = await fetchMovieData(2019);
-    const resultExists = results.some(result => 
-        result.title === "Joker" && result.release_date === "2019-10-01" && result.vote_average == 8.1 && result.editors.length === 7
-    );
-
-    if (resultExists){
-        console.log("fetchMovieData -- Pass");
+    if (results === 0){
+        console.log("fetchMovieData -- FAIL")
     }
     else {
-        console.log("fetchMovieData -- FAIL")
+        const resultExists = results.some(result => 
+            result.title === "Joker" && result.release_date === "2019-10-01" && result.vote_average == 8.1 && result.editors.length === 7
+        );
+
+        if (resultExists){
+            console.log("fetchMovieData -- Pass");
+        }
+        else {
+            console.log("fetchMovieData -- FAIL")
+        }
     }
 }
 
@@ -28,7 +34,6 @@ async function testFetchMovieEditors() {
 
 async function testCreditFails() {
     const results = await fetchMovieEditors(-1);
-    console.log(results);
     if (results.length > 0){
         console.log("Credits Optional -- FAIL")
     }
@@ -37,6 +42,19 @@ async function testCreditFails() {
     }
 }
 
+async function testEndpointStatus() {
+    const results = await axios.get(`http://localhost:3000/MoviesByYear?year=2019`);
+    if (results.status === 200){
+        console.log("Endpoint Available -- Pass");
+    }
+    else {
+        console.log("Endpoint Available -- FAIL");
+    }
+}
+
 testFetchMovieData();
 testFetchMovieEditors();
 testCreditFails();
+
+// Server must be running to pass
+testEndpointStatus();

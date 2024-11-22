@@ -11,12 +11,15 @@ interface CrewMember {
 export const fetchMovieEditors = async (id: number) => {
 
     try {
+        // Get all credits from api
         const response = await axios.get(`https://api.themoviedb.org/3/movie/${id}/credits`, {
             headers: {
-                "Authorization": `Bearer ${process.env.API_READ_ACCESS_TOKEN}`
+                "Authorization": `Bearer ${process.env.API_READ_ACCESS_TOKEN}`,
+                "Cache-Control": "no-cache",
             }
         });
 
+        // Filter for just editors
         const editors = response.data.crew
             .filter((thisCrew: CrewMember) => thisCrew.known_for_department === "Editing")
             .map((thisCrew: CrewMember) => thisCrew.name);
