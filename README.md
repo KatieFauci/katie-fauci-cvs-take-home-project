@@ -21,3 +21,6 @@ npm run serve
 ## Example Request: 
 `http://localhost:3000/MoviesByYear?year=2019` 
 
+
+## Run unit Tests
+`npx ts-node unitTests.ts`

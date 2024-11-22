@@ -24,7 +24,8 @@ export const fetchMovieEditors = async (id: number) => {
         return editors;
 
     } catch (error) {
-        console.error("Error fetching the credit data", error);
+        // If the call for the credit information fails, pass a empty array
+        //console.error("Error fetching the credit data", error);
         return[];
     }
 }

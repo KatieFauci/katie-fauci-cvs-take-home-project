@@ -22,6 +22,7 @@ app.get("/", (req: Request, res: Response) => {
 
 app.get("/MoviesByYear", async (req: Request, res: Response) => {
     
+    // If year is not passed in returns the current year movie data (functionality of the original API)
     const year = req.query.year;
 
     try {
